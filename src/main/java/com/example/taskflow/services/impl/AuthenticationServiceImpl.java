@@ -1,12 +1,12 @@
 package com.example.taskflow.services.impl;
 
-import com.example.taskflow.config.JwtService;
 import com.example.taskflow.domain.User;
 import com.example.taskflow.domain.enums.Role;
 import com.example.taskflow.dto.requests.AuthenticationRequest;
 import com.example.taskflow.dto.requests.RegisterRequest;
 import com.example.taskflow.dto.responses.AuthenticationResponse;
 import com.example.taskflow.repositories.UserRepository;
+import com.example.taskflow.security.JwtService;
 import com.example.taskflow.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
