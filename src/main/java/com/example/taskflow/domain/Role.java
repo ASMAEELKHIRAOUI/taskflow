@@ -1,6 +1,8 @@
 package com.example.taskflow.domain;
 
 import com.example.taskflow.domain.enums.AuthorityEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
