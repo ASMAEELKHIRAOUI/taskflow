@@ -19,14 +19,12 @@ spring:
     password:
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         globally_quoted_identifiers: true
   liquibase:
-    enabled: false
-    change-log: dbl/master.xml
+    enabled: true
+    change-log: db/master.xml
   security:
     user:
       name: user
