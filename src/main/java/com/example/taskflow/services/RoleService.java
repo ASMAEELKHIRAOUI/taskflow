@@ -1,5 +1,6 @@
 package com.example.taskflow.services;
 
+import com.example.taskflow.domain.Authority;
 import com.example.taskflow.domain.Role;
 import com.example.taskflow.domain.enums.AuthorityEnum;
 import org.springframework.stereotype.Component;
@@ -22,8 +23,8 @@ public interface RoleService {
 
     List<Role> getAll();
 
-    Role grantAuthorities(List<AuthorityEnum> authorities, Long id);
+    Role grantAuthorities(List<Authority> authorities, Long id);
 
-    Role revokeAuthorities(List<AuthorityEnum> authorities, Long id);
+    Role revokeAuthorities(List<Authority> authorities, Long id);
 
 }

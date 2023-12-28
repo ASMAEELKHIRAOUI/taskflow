@@ -35,19 +35,20 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public Role grantAuthorities(List<AuthorityEnum> authoritiesToGrant, Long id){
+    public Role grantAuthorities(List<Authority> authoritiesToGrant, Long id){
         Role role = roleRepository.findById(id).orElse(null);
         if (role != null){
-//            List<Authority> authorities = new HashSet<>(role.getAuthorities());
-//            authorities.addAll(authoritiesToGrant);
-//            role.setAuthorities(authorities);
+            Set<Authority> authorities = new HashSet<>(role.getAuthorities());
+            authorities.addAll(authoritiesToGrant);
+            List<Authority> authorityList = new ArrayList<>(authorities);
+            role.setAuthorities(authorityList);
             return roleRepository.save(role);
         }
         return null;
     }
 
     @Override
-    public Role revokeAuthorities(List<AuthorityEnum> authoritiesToRevoke, Long id){
+    public Role revokeAuthorities(List<Authority> authoritiesToRevoke, Long id){
 //        Role role = roleRepository.findById(id).orElse(null);
 //        if (role != null){
 //            List<AuthorityEnum> currentAuthorities = new ArrayList<>(role.getAuthorities());
