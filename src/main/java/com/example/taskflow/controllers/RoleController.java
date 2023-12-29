@@ -6,6 +6,8 @@ import com.example.taskflow.handler.response.ResponseMessage;
 import com.example.taskflow.mapper.RoleMapper;
 import com.example.taskflow.services.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,13 @@ public class RoleController {
         Role role = roleService.grantAuthorities(authorities, id);
         if (role == null) return ResponseMessage.badRequest("bad request");
         else return ResponseMessage.created("Authorities granted successfully", role);
+    }
+
+    @PutMapping("/revoke_authorities/{id}")
+    public ResponseEntity<Role> revokeAuthorities(@RequestBody List<String> authorities, @PathVariable Long id){
+        Role role = roleService.revokeAuthorities(authorities, id);
+        if (role == null) return ResponseEntity.badRequest().build();
+        else return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
 }

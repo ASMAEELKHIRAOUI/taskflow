@@ -4,7 +4,9 @@ import com.example.taskflow.domain.Authority;
 import com.example.taskflow.domain.Role;
 import com.example.taskflow.domain.enums.AuthorityEnum;
 import com.example.taskflow.handler.exception.CustomException;
+import com.example.taskflow.repositories.AuthorityRepository;
 import com.example.taskflow.repositories.RoleRepository;
+import com.example.taskflow.services.AuthorityService;
 import com.example.taskflow.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService{
 
+    private final AuthorityService authorityService;
     private final RoleRepository roleRepository;
 
     @Override
@@ -48,14 +51,14 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public Role revokeAuthorities(List<Authority> authoritiesToRevoke, Long id){
-//        Role role = roleRepository.findById(id).orElse(null);
-//        if (role != null){
-//            List<AuthorityEnum> currentAuthorities = new ArrayList<>(role.getAuthorities());
-//            currentAuthorities.removeAll(authoritiesToRevoke);
-//            role.setAuthorities(new HashSet<>(currentAuthorities));
-//            return roleRepository.save(role);
-//        }
+    public Role revokeAuthorities(List<String> authoritiesToRevoke, Long id){
+        Role role = roleRepository.findById(id).orElse(null);
+        if (role != null){
+            List<Authority> currentAuthorities = role.getAuthorities();
+            currentAuthorities.removeAll(authorityService.getAllByName(authoritiesToRevoke));
+            role.setAuthorities(currentAuthorities);
+            return roleRepository.save(role);
+        }
         return null;
     }
 
