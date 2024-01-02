@@ -1,6 +1,5 @@
 package com.example.taskflow.services;
 
-import com.example.taskflow.domain.User;
 import com.example.taskflow.dto.requests.AuthenticationRequest;
 import com.example.taskflow.dto.requests.RegisterRequest;
 import com.example.taskflow.dto.responses.AuthenticationResponse;

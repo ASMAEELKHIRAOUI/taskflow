@@ -1,7 +1,6 @@
 package com.example.taskflow.repositories;
 
 import com.example.taskflow.domain.Role;
-import com.example.taskflow.dto.RoleDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +13,5 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     Optional<Role> findByIsDefaultTrue();
 
 
+    Optional<Role> findByName(String name);
 }

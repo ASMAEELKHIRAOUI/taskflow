@@ -19,6 +19,8 @@ public interface RoleService {
 
     Optional<Role> getById(Long id);
 
+    Optional<Role> getByName(String name);
+
     void delete(Long id);
 
     List<Role> getAll();

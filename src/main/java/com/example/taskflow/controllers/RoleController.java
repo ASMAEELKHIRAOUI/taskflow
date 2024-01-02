@@ -3,11 +3,9 @@ package com.example.taskflow.controllers;
 import com.example.taskflow.domain.Authority;
 import com.example.taskflow.domain.Role;
 import com.example.taskflow.handler.response.ResponseMessage;
-import com.example.taskflow.mapper.RoleMapper;
 import com.example.taskflow.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +17,6 @@ import java.util.List;
 public class RoleController {
 
     private final RoleService roleService;
-    //private final RoleMapper roleMapper;
 
     @GetMapping
     public ResponseEntity getAll(){

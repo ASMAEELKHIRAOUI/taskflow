@@ -2,9 +2,7 @@ package com.example.taskflow.services.impl;
 
 import com.example.taskflow.domain.Authority;
 import com.example.taskflow.domain.Role;
-import com.example.taskflow.domain.enums.AuthorityEnum;
 import com.example.taskflow.handler.exception.CustomException;
-import com.example.taskflow.repositories.AuthorityRepository;
 import com.example.taskflow.repositories.RoleRepository;
 import com.example.taskflow.services.AuthorityService;
 import com.example.taskflow.services.RoleService;
@@ -78,6 +76,11 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public Optional<Role> getById(Long id){
         return roleRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Role> getByName(String name){
+        return roleRepository.findByName(name);
     }
 
     @Override
