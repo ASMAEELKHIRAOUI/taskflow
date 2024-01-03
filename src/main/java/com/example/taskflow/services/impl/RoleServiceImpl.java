@@ -27,7 +27,8 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public List<Role> getAll(){
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        if (authorities.contains("VIEW_ROLES")) return roleRepository.findAll();
+        if (authorities.contains("VIEW_ROLES"))
+            return roleRepository.findAll();
         else return null;
     }
 
@@ -36,6 +37,7 @@ public class RoleServiceImpl implements RoleService{
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (authorities.contains("CREATE_ROLE")){
             if (findDefaultRole().isPresent() && role.isDefault()) throw new CustomException("There is already a default role", HttpStatus.UNAUTHORIZED);
+            role.setAuthorities(authorityService.getAllByName(role.getAuthorities().stream().map(authority -> authority.getName().toString()).toList()));
             return roleRepository.save(role);
         }else return null;
     }
@@ -52,7 +54,7 @@ public class RoleServiceImpl implements RoleService{
             Role role = roleRepository.findById(id).orElse(null);
             if (role != null){
                 Set<Authority> newAuthorities = new HashSet<>(role.getAuthorities());
-                newAuthorities.addAll(authoritiesToGrant);
+                newAuthorities.addAll(authorityService.getAllByName(authoritiesToGrant.stream().map(authority -> authority.getName().toString()).toList()));
                 List<Authority> authorityList = new ArrayList<>(newAuthorities);
                 role.setAuthorities(authorityList);
                 return roleRepository.save(role);
@@ -63,13 +65,13 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public Role revokeAuthorities(List<String> authoritiesToRevoke, Long id){
+    public Role revokeAuthorities(List<Authority> authoritiesToRevoke, Long id){
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (authorities.contains("REVOKE_AUTHORITY_FROM_ROLE")){
             Role role = roleRepository.findById(id).orElse(null);
             if (role != null){
                 List<Authority> currentAuthorities = role.getAuthorities();
-                currentAuthorities.removeAll(authorityService.getAllByName(authoritiesToRevoke));
+                currentAuthorities.removeAll(authorityService.getAllByName(authoritiesToRevoke.stream().map(authority -> authority.getName().toString()).toList()));
                 role.setAuthorities(currentAuthorities);
                 return roleRepository.save(role);
             }

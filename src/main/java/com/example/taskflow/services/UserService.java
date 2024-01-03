@@ -14,7 +14,7 @@ public interface UserService {
 
     Optional<User> getById(Long id);
 
-    User assignRole(Long id, String role);
+    User assignRole(Long id, Role role);
 
     User update(User user, Long id);
 

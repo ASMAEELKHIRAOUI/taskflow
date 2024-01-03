@@ -27,6 +27,6 @@ public interface RoleService {
 
     Role grantAuthorities(List<Authority> authorities, Long id);
 
-    Role revokeAuthorities(List<String> authorities, Long id);
+    Role revokeAuthorities(List<Authority> authorities, Long id);
 
 }

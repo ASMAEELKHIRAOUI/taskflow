@@ -18,7 +18,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleService roleService;
 
     @Override
     public List<User> getAll() {
@@ -33,10 +32,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User assignRole(Long id, String name) {
+    public User assignRole(Long id, Role role) {
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (authorities.contains("ASSIGN_ROLE_TO_USER")){
-            Role role = roleService.getByName(name).orElse(null);
             User user = getById(id).orElse(null);
             if (user != null && role != null){
                 user.setRole(role);

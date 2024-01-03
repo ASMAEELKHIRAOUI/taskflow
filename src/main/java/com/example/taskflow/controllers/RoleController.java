@@ -2,7 +2,8 @@ package com.example.taskflow.controllers;
 
 import com.example.taskflow.domain.Authority;
 import com.example.taskflow.domain.Role;
-import com.example.taskflow.handler.response.ResponseMessage;
+import com.example.taskflow.dto.requests.RoleRequestDTO;
+import com.example.taskflow.dto.responses.RoleResponseDTO;
 import com.example.taskflow.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,31 +20,31 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity getAll(){
+    public ResponseEntity<List<RoleResponseDTO>> getAll(){
         List<Role> roles = roleService.getAll();
-        if (roles.isEmpty()) return ResponseMessage.notFound("No roles were found");
-        else return ResponseMessage.ok("Roles fetched successfully", roles);
+        if (roles.isEmpty()) return ResponseEntity.badRequest().build();
+        else return new ResponseEntity<>(roles.stream().map(RoleResponseDTO::fromRole).toList(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity save(@RequestBody Role roleToSave){
-        Role role = roleService.save(roleToSave);
-        if (role == null) return ResponseMessage.badRequest("bad request");
-        else return ResponseMessage.created("Role saved successfully", role);
+    public ResponseEntity<RoleResponseDTO> save(@RequestBody RoleRequestDTO roleToSave){
+        Role role = roleService.save(roleToSave.toRole());
+        if (role == null) return ResponseEntity.badRequest().build();
+        else return new ResponseEntity<>(RoleResponseDTO.fromRole(role), HttpStatus.OK);
     }
 
     @PutMapping("/grant_authorities/{id}")
-    public ResponseEntity grantAuthorities(@RequestBody List<Authority> authorities, @PathVariable Long id){
-        Role role = roleService.grantAuthorities(authorities, id);
-        if (role == null) return ResponseMessage.badRequest("bad request");
-        else return ResponseMessage.created("Authorities granted successfully", role);
+    public ResponseEntity<RoleResponseDTO> grantAuthorities(@RequestBody RoleRequestDTO rolesAuthorities, @PathVariable Long id){
+        Role role = roleService.grantAuthorities(rolesAuthorities.toRole().getAuthorities(), id);
+        if (role == null) return ResponseEntity.badRequest().build();
+        else return new ResponseEntity<>(RoleResponseDTO.fromRole(role), HttpStatus.OK);
     }
 
     @PutMapping("/revoke_authorities/{id}")
-    public ResponseEntity<Role> revokeAuthorities(@RequestBody List<String> authorities, @PathVariable Long id){
-        Role role = roleService.revokeAuthorities(authorities, id);
+    public ResponseEntity<RoleResponseDTO> revokeAuthorities(@RequestBody RoleRequestDTO rolesAuthorities, @PathVariable Long id){
+        Role role = roleService.revokeAuthorities(rolesAuthorities.toRole().getAuthorities(), id);
         if (role == null) return ResponseEntity.badRequest().build();
-        else return new ResponseEntity<>(role, HttpStatus.OK);
+        else return new ResponseEntity<>(RoleResponseDTO.fromRole(role), HttpStatus.OK);
     }
 
 }

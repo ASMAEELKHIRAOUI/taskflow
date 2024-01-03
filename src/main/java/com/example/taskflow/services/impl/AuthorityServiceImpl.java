@@ -19,7 +19,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public List<Authority> getAllByName(List<String> authorities) {
         List<String> usersAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        if (usersAuthorities.contains("VIEW_AUTHORITIES"))return authorityRepository.findAllByName(authorities);
+        if (usersAuthorities.contains("VIEW_AUTHORITIES"))
+            return authorityRepository.findAllByName(authorities);
         return null;
     }
 }
